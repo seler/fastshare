@@ -15,7 +15,7 @@ public class TestowyHandler implements HttpHandler {
        public void handle(HttpExchange t) throws IOException {
            InputStream is = t.getRequestBody();
            //read(is); // .. read the request body
-           String response = "This is the response";
+           String response = "This is the response "+t.getRemoteAddress().getHostName()+ ":)";
            t.sendResponseHeaders(200, response.length());
            OutputStream os = t.getResponseBody();
            os.write(response.getBytes());
