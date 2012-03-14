@@ -1,21 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fastshare;
 
-/**
- *
- * @author Administrator
- */
+import com.sun.net.httpserver.HttpServer;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class FastShare {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
-		// testowy komentarz by vltR
+	// testowy komentarz by vltR
         // drugi :P
+        
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 1024);
+        server.createContext("/applications/myapp", new TestowyHandler());
+        server.setExecutor(null); // creates a default executor
+        server.start();
     }
 }
