@@ -5,23 +5,17 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class FastShare {
-
-    /**
-     * @param args the command line arguments
-     */
     
     public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-	// testowy komentarz by vltR
-        // drugi :P
+        //args[0] = context (np. /app/data)
+        //args[1] = plik do serwowania
+        
+        //System.out.println("arg0:"+args[0]+" | arg1:"+args[1]);
         
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 1024);
-        server.createContext("/applications/myapp", new TestowyHandler());
+        server.createContext(args[0], new TestowyHandler(args[1]));
         server.setExecutor(null); // creates a default executor
         server.start();
     }
-    
-    public void nowyTest(){
-        System.out.println("A tu sobie testuje - ostatni raz (mam nadzieje)");
-    }
+
 }
