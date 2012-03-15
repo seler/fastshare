@@ -20,4 +20,8 @@ public class FastShare {
         server.setExecutor(null); // creates a default executor
         server.start();
     }
+    
+    public void nowyTest(){
+        System.out.println("A tu sobie testuje - ostatni raz (mam nadzieje)");
+    }
 }
