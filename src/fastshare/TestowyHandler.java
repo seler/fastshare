@@ -6,6 +6,7 @@ package fastshare;
 
 import com.sun.net.httpserver.*;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,12 +25,22 @@ public class TestowyHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
         InputStream is = t.getRequestBody();
-        //read(is); // .. read the request body
-        //String response = "This is the response " + t.getRemoteAddress().getHostName() + ":)";
+        
         fileReader = new FileReader(_filename);
-        char[] buf = new char[1048576];
-        fileReader.read(buf);
-        String response = String.copyValueOf(buf);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        ArrayList<String> lines = new ArrayList<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            lines.add(line);
+        }
+        bufferedReader.close();
+        String response = "";
+        String[] buf = lines.toArray(new String[lines.size()]);
+        for(String s : buf) response += s+"\n";
+        
+        //Headers headers = t.getResponseHeaders();
+        //headers.add("Content-Type", "application/xhtml+xml; charset=utf-8");
+        
         t.sendResponseHeaders(200, response.length());
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());

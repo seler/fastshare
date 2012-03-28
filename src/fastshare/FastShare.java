@@ -12,7 +12,7 @@ public class FastShare {
         
         //System.out.println("arg0:"+args[0]+" | arg1:"+args[1]);
         
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 1024);
+        HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
         server.createContext(args[0], new TestowyHandler(args[1]));
         server.setExecutor(null); // creates a default executor
         server.start();
