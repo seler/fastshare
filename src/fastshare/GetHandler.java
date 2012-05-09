@@ -3,9 +3,6 @@ package fastshare;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
-import java.net.URL;
-import java.util.HashMap;
-import sun.misc.IOUtils;
 
 public class GetHandler implements HttpHandler {
 
@@ -27,26 +24,39 @@ public class GetHandler implements HttpHandler {
 
         for (Resource r : sharing.Resources) {
             if (r.getResContext().equals(getContext)) {
-                byte[] file = getFileToByte(r.getLocation());
+                serveFile(t, r.getLocation());
+                /*byte[] file = getFileToByte(r.getLocation());
                 t.sendResponseHeaders(200, file.length);
                 OutputStream os = t.getResponseBody();
                 os.write(file, 0, file.length);
                 os.close();
-                System.out.println("TRAF!");
+                System.out.println("TRAF!");*/
                 fileFound = true;
             }
         }
         if (fileFound == false) {
             System.out.println("404");
-            InputStream plikHTML = getClass().getResourceAsStream("/html/404.html");
-            byte[] bytearray= obtainByteData(plikHTML);
-            t.sendResponseHeaders(200, bytearray.length);
-            OutputStream os = t.getResponseBody();
-            os.write(bytearray, 0, bytearray.length);
-            os.close();
+            serveResource(t, "/html/404.html");
         }
     }
 
+    private void serveResource(HttpExchange t, String res) throws IOException {
+        InputStream resFile = getClass().getResourceAsStream(res);
+        byte[] bytearray = obtainByteData(resFile);
+        t.sendResponseHeaders(200, bytearray.length);
+        OutputStream os = t.getResponseBody();
+        os.write(bytearray, 0, bytearray.length);
+        os.close();
+    }
+    
+    private void serveFile(HttpExchange t, String location) throws IOException {
+        byte[] file = getFileToByte(location);
+        t.sendResponseHeaders(200, file.length);
+        OutputStream os = t.getResponseBody();
+        os.write(file, 0, file.length);
+        os.close();
+    }
+    
     private byte[] obtainByteData(InputStream is) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         for (int readBytes = is.read(); readBytes >= 0; readBytes = is.read()) {
