@@ -46,6 +46,8 @@ public class Settings {
                 }
             }
         }
+        
+        FastShare.StatusLabel.reprint();
         return true;
     }
 
@@ -79,6 +81,7 @@ public class Settings {
         StreamResult result = new StreamResult(new File("../settings.xml"));
         transformer.transform(source, result);
         
+        FastShare.StatusLabel.reprint();
         return true;
     }
 

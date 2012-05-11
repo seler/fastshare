@@ -81,5 +81,32 @@ public class NetInterfaces {
         
     }
     
+    public static InetAddress getAddressByName(String name) throws IOException {
+        InetAddress ret;
+        
+        ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
+        ArrayList<InetAddress> Addresses         = new ArrayList<InetAddress>();
+        
+        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+        for (NetworkInterface netIf : Collections.list(nets)) {
+            Enumeration<InetAddress> address = netIf.getInetAddresses();
+            if (address.hasMoreElements()) {
+                for (InetAddress adr : Collections.list(address)) {
+                    if (adr instanceof Inet4Address){
+                        Interfaces.add(netIf);
+                        Addresses.add(adr);
+                    }
+                }
+            }
+        }
+        
+        for(int i=0; i<Interfaces.size();i++){
+            if(Interfaces.get(i).getName().equals(name)) return Addresses.get(i);
+        }
+        
+        return null;
+    }
+    
+    
     
 }

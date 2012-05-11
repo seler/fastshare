@@ -4,23 +4,34 @@ import java.awt.*;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class FastShare {
+    
+    public static windows.StatusLabel StatusLabel = new windows.StatusLabel();
 
     public static void main(String[] args) throws Exception {
-
-        GUI.setSystemLookAndFeel();
+        /*RandomString rs = new RandomString(9);
+            System.out.println(rs.nextString());
+            System.out.println(rs.nextString());
+            System.out.println(rs.nextString());
+            System.out.println(rs.nextString());
+            System.out.println(rs.nextString());
+            */
+            
+        //GUI.getInstance().setSystemLookAndFeel();
 
         if (SystemTray.isSupported()) {
-            try {
+            try {   
                 if (Settings.load() == true) {
-                    GUI.showTrayIcon();
+                    GUI.getInstance().showTrayIcon();
                 } else {
-                    GUI.SettingsNotFound();
+                    GUI.getInstance().SettingsNotFound();
                 }
             } catch (Exception e) {
                 System.out.println("BRAK");
+                e.printStackTrace();
             }
         }
         /*
@@ -47,12 +58,14 @@ public class FastShare {
          *
          * for(int i=0; i<filesCount;i++){ files.add(args[2+i]); }
          *
-         * Sharing sharing = new Sharing(context, email); for(String s : files)
-         * sharing.addFile(s);
+         * Sharing sharing = new Sharing(context, email); 
+         * for(String s : files)
+         *      sharing.addFile(s);
          *
          * sharing.print();
          *
-         * WWWServer wwwserv = new WWWServer(); wwwserv.addContext(sharing);
+         * WWWServer wwwserv = new WWWServer(); 
+         * wwwserv.addContext(sharing);
          * wwwserv.run();
          *
          */
