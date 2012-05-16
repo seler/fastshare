@@ -12,7 +12,7 @@ import javax.swing.JFileChooser;
  * @author vltR
  */
 public class NewSharing extends javax.swing.JFrame {
-
+    private File[] files;
     /**
      * Creates new form NewSharing
      */
@@ -38,12 +38,18 @@ public class NewSharing extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FastShare");
         setAlwaysOnTop(true);
+        setResizable(false);
 
         jButton1.setText("SHARE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setText("E-mail");
+        jTextField1.setText("E-mail(s) - separate with space");
 
-        jButton2.setText("Select File");
+        jButton2.setText("Select File(s)");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -66,24 +72,23 @@ public class NewSharing extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(75, 75, 75))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -92,8 +97,9 @@ public class NewSharing extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         JFileChooser fc = new JFileChooser();
         fc.setMultiSelectionEnabled(true);
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fc.showOpenDialog(this);
-        File[] files = fc.getSelectedFiles();
+        files = fc.getSelectedFiles();
         if(files!=null){
             jTextArea1.setText("File(s):\n");
             for(File f : files){
@@ -102,6 +108,47 @@ public class NewSharing extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        /*
+         * int argCount = args.length; int filesCount = argCount-2;
+         *
+         * String context = args[0]; 
+         * String email = args[1]; 
+         * ArrayList<String> files = new ArrayList<String>();
+         *
+         * //System.out.println("Pliki:");
+         *
+         * for(int i=0; i<filesCount;i++){ 
+         *      files.add(args[2+i]); 
+         * }
+         *
+         * Sharing sharing = new Sharing(context, email); 
+         * for(String s : files)
+         *      sharing.addFile(s);
+         *
+         * sharing.print();
+         *
+         * WWWServer wwwserv = new WWWServer(); 
+         * wwwserv.addContext(sharing);
+         * wwwserv.run();
+         *
+         */
+        fastshare.RandomString rs = new fastshare.RandomString(9);
+        String context = "/" + rs.nextString();
+        String email = jTextField1.getText();
+        fastshare.Sharing sharing = new fastshare.Sharing(context, email);
+        if(files!=null){
+            for(File f : files){
+                String n = f.getAbsolutePath();
+                sharing.addFile(n);
+            }
+        }
+        files = null;
+        fastshare.WWWServer.getInstance().addContext(sharing);
+        //System.out.println("Context: "+context);
+        setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -10,6 +10,7 @@ import javax.swing.*;
 public class FastShare {
     
     public static windows.StatusLabel StatusLabel = new windows.StatusLabel();
+    public static ArrayList<Sharing> Sharings = new ArrayList<Sharing>();
 
     public static void main(String[] args) throws Exception {
         /*RandomString rs = new RandomString(9);
@@ -51,12 +52,15 @@ public class FastShare {
         /*
          * int argCount = args.length; int filesCount = argCount-2;
          *
-         * String context = args[0]; String email = args[1]; ArrayList<String>
-         * files = new ArrayList<String>();
+         * String context = args[0]; 
+         * String email = args[1]; 
+         * ArrayList<String> files = new ArrayList<String>();
          *
          * //System.out.println("Pliki:");
          *
-         * for(int i=0; i<filesCount;i++){ files.add(args[2+i]); }
+         * for(int i=0; i<filesCount;i++){ 
+         *      files.add(args[2+i]); 
+         * }
          *
          * Sharing sharing = new Sharing(context, email); 
          * for(String s : files)

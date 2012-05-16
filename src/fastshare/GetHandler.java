@@ -17,27 +17,49 @@ public class GetHandler implements HttpHandler {
         String get = t.getRequestURI().getPath();
         String getContext = get.replace("/shares", "");
 
-        System.out.println("get: " + get);
+        //System.out.println("get: " + get);
         Boolean fileFound = false;
+        Boolean listedFiles = false;
 
-        System.out.println("getContext: " + getContext);
+        //System.out.println("getContext: " + getContext);
 
         for (Resource r : sharing.Resources) {
             if (r.getResContext().equals(getContext)) {
                 serveFile(t, r.getLocation());
-                /*byte[] file = getFileToByte(r.getLocation());
-                t.sendResponseHeaders(200, file.length);
-                OutputStream os = t.getResponseBody();
-                os.write(file, 0, file.length);
-                os.close();
-                System.out.println("TRAF!");*/
                 fileFound = true;
             }
         }
-        if (fileFound == false) {
-            System.out.println("404");
+        if ((getContext.equals(sharing.getContext() + "/")) || (getContext.equals(sharing.getContext()))) {
+            try {
+                String html_ = getResourceAsString("/html/listfiles.html");
+                String html = html_.replaceAll("__filelist__", fileList());
+                byte[] res = html.getBytes();
+                t.sendResponseHeaders(200, res.length);
+                OutputStream os = t.getResponseBody();
+                os.write(res, 0, res.length);
+                os.close();
+                listedFiles = true;
+                //System.out.println(html_);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+        if ( (fileFound == false) && (listedFiles == false) ) {
+            //System.out.println("404");
             serveResource(t, "/html/404.html");
         }
+    }
+
+    private String fileList() {
+        String ret = "";
+        for (Resource r : sharing.Resources) {
+            String name = r.getResContext().replace(sharing.getContext()+"/", "");
+            String link = "<a href='"+r.getLink()+"'>[Download]</a>";
+            
+            ret += "<tr><td width=75%>" + name + "</td><td width=25%>" + link + "</td></tr>";
+        }
+        return ret;
     }
 
     private void serveResource(HttpExchange t, String res) throws IOException {
@@ -48,7 +70,19 @@ public class GetHandler implements HttpHandler {
         os.write(bytearray, 0, bytearray.length);
         os.close();
     }
-    
+
+    private String getResourceAsString(String res) throws Exception {
+        InputStream is = getClass().getResourceAsStream(res);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line = br.readLine()) != null){
+            sb.append(line);
+        }
+        br.close();
+        return sb.toString();
+    }
+
     private void serveFile(HttpExchange t, String location) throws IOException {
         byte[] file = getFileToByte(location);
         t.sendResponseHeaders(200, file.length);
@@ -56,7 +90,7 @@ public class GetHandler implements HttpHandler {
         os.write(file, 0, file.length);
         os.close();
     }
-    
+
     private byte[] obtainByteData(InputStream is) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         for (int readBytes = is.read(); readBytes >= 0; readBytes = is.read()) {
@@ -68,10 +102,10 @@ public class GetHandler implements HttpHandler {
         outputStream.close();
         return byteData;
     }
- 
-    private byte[] getFileToByte(String file) throws IOException{
+
+    private byte[] getFileToByte(String file) throws IOException {
         File f = new File(file);
-        byte[] ret = new byte[(int)f.length()];
+        byte[] ret = new byte[(int) f.length()];
         FileInputStream fis = new FileInputStream(file);
         BufferedInputStream bis = new BufferedInputStream(fis);
         bis.read(ret, 0, ret.length);

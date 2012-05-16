@@ -21,7 +21,36 @@ public class WWWServer implements Runnable {
     }
 
     public void addContext(Sharing sharing){
-        server.createContext("/shares", new GetHandler(sharing));
+        server.createContext("/shares"+sharing.getContext(), new GetHandler(sharing));
+        FastShare.Sharings.add(sharing);
+        
+        windows.MainWindow.TabModel.clearData();
+        
+        for(Sharing s : FastShare.Sharings){
+            windows.MainWindow.TabModel.addRow(s.getInfo());
+        }
+        
+        String url = getURL() + sharing.getContext()+"/";
+        String sMail = sharing.getEmail();
+        String[] mails = sMail.split(" ");
+        for(String m : mails){
+            Mailer.sendNotification(m, url);
+        }
+    }
+    
+    private String getURL(){
+        String ip = "";
+        String port = Settings.getPort();
+        try {
+            ip = NetInterfaces.getAddressByName(Settings.getInterface()).getHostAddress();
+        } catch (Exception e) { }
+
+        return "http://"+ip+":"+port+"/shares";
+    }
+    
+    public void removeContext(Sharing sharing){
+        server.removeContext("/shares"+sharing.getContext());
+        FastShare.Sharings.remove(sharing);
     }
     
     @Override
@@ -44,6 +73,7 @@ public class WWWServer implements Runnable {
         server = null;
         running = false;
         FastShare.StatusLabel.reprint();
+        FastShare.Sharings.clear();
         try{
             GUI.getInstance().repaintIcon();
         } catch(Exception e){ }

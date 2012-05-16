@@ -12,13 +12,13 @@ public class GUI {
     private static GUI instance = null;
     private static Image icon;
     private static TrayIcon trayIcon;
-    private static windows.Settings SettingsWin;
+    private static windows.MainWindow SettingsWin;
     
 
     protected GUI() {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            SettingsWin = new windows.Settings();
+            SettingsWin = new windows.MainWindow();
         } catch(Exception e2){ }
     }
 
@@ -56,9 +56,9 @@ public class GUI {
 
         PopupMenu menu = new PopupMenu();
 
-        MenuItem showConfig = new MenuItem("Pokaz Ustawienia");
+        MenuItem showConfig = new MenuItem("Status & Settings");
         menu.add(showConfig);
-        MenuItem exit = new MenuItem("Zamknij");
+        MenuItem exit = new MenuItem("Exit");
         menu.add(exit);
 
         showConfig.addActionListener(new ActionListener() {
@@ -97,7 +97,10 @@ public class GUI {
     }
 
     public static void Settings() throws Exception {
-
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (dim.width-SettingsWin.getSize().width)/2;
+        int y = (dim.height-SettingsWin.getSize().height)/2;
+        SettingsWin.setLocation(x, y);
         SettingsWin.setVisible(true);
     }
 }

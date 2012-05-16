@@ -6,7 +6,7 @@ public class Resource {
 
     private String location;
     private String resContext;
-
+    
     private void setLocation(String _location) {
         this.location = _location;
     }
@@ -26,7 +26,17 @@ public class Resource {
     public Resource(String _path, String _context) {
         File file = new File(_path);
         setLocation(file.getAbsolutePath());
-        setResContext(_context +"/"+ file.getName() ); //file.getPath();
-        resContext = resContext.replace("\\" , "/");
+        setResContext(_context + "/" + file.getName()); //file.getPath();
+        resContext = resContext.replace("\\", "/");
+    }
+
+    public String getLink() {
+        String ret = "";
+        String ip = Settings.getIP();
+        String port = Settings.getPort();
+
+        ret = "http://"+ip+":"+port+"/shares"+resContext;
+        
+        return ret;
     }
 }

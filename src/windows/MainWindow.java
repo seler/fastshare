@@ -7,37 +7,42 @@ package windows;
 import fastshare.NetInterfaces;
 import java.net.NetworkInterface;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author vltR
  */
-public class Settings extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame {
+
+    private static String tabData[][] = {};
+    private static String tabCol[] = {"Receiver(s)", "URL"};
+    public  static TabModel TabModel = new TabModel(tabData, tabCol);
 
     /**
-     * Creates new form Settings
+     * Creates new form MainWindow
      */
-    public Settings() throws Exception {
+    public MainWindow() throws Exception {
         initComponents();
         jTextField2.setText(fastshare.Settings.getPort());
         jComboBox1.setModel(comboModelInterface());
         SetCombo();
         statusLabel1.reprint();
     }
-    
-    private DefaultComboBoxModel comboModelInterface() throws Exception{
+
+    private DefaultComboBoxModel comboModelInterface() throws Exception {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for( ComboItem i : NetInterfaces.ListInterfacesCombo()){
+        for (ComboItem i : NetInterfaces.ListInterfacesCombo()) {
             model.addElement(i);
         }
-        
+
         return model;
     }
-    
-    private void SetCombo() throws Exception{
-        for(int i=0; i<jComboBox1.getItemCount(); i++){
-            ComboItem item = (ComboItem)jComboBox1.getItemAt(i);
-            if(item.getValue().equals(fastshare.Settings.getInterface())) {
+
+    private void SetCombo() throws Exception {
+        for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+            ComboItem item = (ComboItem) jComboBox1.getItemAt(i);
+            if (item.getValue().equals(fastshare.Settings.getInterface())) {
                 jComboBox1.setSelectedIndex(i);
             }
         }
@@ -62,14 +67,19 @@ public class Settings extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         statusLabel1 = fastshare.FastShare.StatusLabel;
         jButton4 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
         setTitle("FastShare");
+        setResizable(false);
 
         jLabel1.setText("Interface");
 
         jLabel3.setText("Port");
 
-        jButton1.setText("Save");
+        jButton1.setText("Save settings");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -93,9 +103,23 @@ public class Settings extends javax.swing.JFrame {
         });
 
         jButton4.setText("SHARING");
+        jButton4.setEnabled(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(TabModel);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel4.setText("Running sharings:");
+
+        jButton5.setText("Remove Sharing");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
             }
         });
 
@@ -112,30 +136,37 @@ public class Settings extends javax.swing.JFrame {
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jButton5))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, 133, Short.MAX_VALUE)
-                                    .addComponent(jTextField2))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(10, 10, 10)
-                        .addComponent(statusLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))
-                .addContainerGap())
+                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel1))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jComboBox1, 0, 133, Short.MAX_VALUE)
+                                            .addComponent(jTextField2))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addGap(10, 10, 10)
+                                .addComponent(statusLabel1)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statusLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -153,8 +184,15 @@ public class Settings extends javax.swing.JFrame {
                             .addComponent(jButton2)
                             .addComponent(jButton4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
-                .addContainerGap(144, Short.MAX_VALUE))
+                        .addComponent(jButton3))
+                    .addComponent(statusLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addContainerGap(282, Short.MAX_VALUE))
         );
 
         jLabel2.getAccessibleContext().setAccessibleName("iFace_label");
@@ -163,31 +201,40 @@ public class Settings extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ComboItem selInterface = (ComboItem)jComboBox1.getSelectedItem();
-        
+        ComboItem selInterface = (ComboItem) jComboBox1.getSelectedItem();
+
         fastshare.Settings.setInterface(selInterface.getValue());
         fastshare.Settings.setPort(jTextField2.getText());
-        try{
-            if(fastshare.Settings.save()==true){
-               // this.setVisible(false);
+        try {
+            if (fastshare.Settings.save() == true) {
+                // this.setVisible(false);
             }
-        } catch (Exception e){
-            
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         fastshare.WWWServer.getInstance().run();
+        if (fastshare.WWWServer.getInstance().isRunning() == true) {
+            jButton4.setEnabled(true);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         fastshare.WWWServer.getInstance().stop();
+        if (fastshare.WWWServer.getInstance().isRunning() == false) {
+            jButton4.setEnabled(false);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         windows.NewSharing SharingWin = new windows.NewSharing();
         SharingWin.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        TabModel.insertRow(0,new Object[]{"Ranjan","50"});
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,13 +257,13 @@ public class Settings extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -226,9 +273,10 @@ public class Settings extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                try{
-                    new Settings().setVisible(true);
-                } catch (Exception e){ }
+                try {
+                    new MainWindow().setVisible(true);
+                } catch (Exception e) {
+                }
             }
         });
     }
@@ -237,10 +285,14 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private windows.StatusLabel statusLabel1;
     // End of variables declaration//GEN-END:variables

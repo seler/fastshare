@@ -17,6 +17,7 @@ public class Settings {
     private static Settings instance = null;
     private static String S_interface;
     private static String S_port;
+    private static String S_ip;
 
     protected Settings() {
     }
@@ -93,6 +94,13 @@ public class Settings {
 
     public static void setInterface(String iface) {
         S_interface = iface;
+        try {
+            S_ip = NetInterfaces.getAddressByName(Settings.getInterface()).getHostAddress();
+        } catch (Exception e) { }
+    }
+    
+    public static String getIP(){
+        return S_ip;
     }
 
     public static String getInterface() {

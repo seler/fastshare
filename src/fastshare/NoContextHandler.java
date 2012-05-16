@@ -10,7 +10,7 @@ public class NoContextHandler implements HttpHandler {
     }
 
     public void handle(HttpExchange t) throws IOException {
-        serveResource(t, "/html/404.html");
+        serveResource(t, "/html/nocontext.html");
     }
 
     private void serveResource(HttpExchange t, String res) throws IOException {

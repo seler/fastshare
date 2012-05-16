@@ -31,6 +31,18 @@ public class Sharing {
         setEmail(_email);
     }
     
+    public Object[] getInfo(){
+        String receivers = getEmail();
+        String URL = "";
+        
+        String ip = Settings.getIP();
+        String port = Settings.getPort();
+
+        URL = "http://"+ip+":"+port+"/shares"+getContext()+"/";
+        
+        return new Object[]{receivers,URL};
+    }
+    
     public void addFile(String _file){
             File file = new File(_file); // f
             String name = file.getName();
@@ -55,7 +67,12 @@ public class Sharing {
             if( child.isDirectory() == false){
                 // path, context
                 String newDir = dir.replace(mainDir, "");
-                Resources.add(new Resource(dir+"/"+child.getName(), getContext()+"/"+newDir));
+                File tmp = new File(newDir);
+                Resources.add(new Resource(dir+"/"+child.getName(), getContext()+"/"+tmp.getName()));
+                //bylo: Resources.add(new Resource(dir+"/"+child.getName(), getContext()+"/"+newDir));
+                //File tmp = new File(newDir);
+                
+                //System.out.println("context: "+getContext()+"/"+tmp.getName());
             }
             else{
                 recurseDirectory(dir+"/"+child.getName());
