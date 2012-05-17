@@ -96,7 +96,9 @@ public class Settings {
         S_interface = iface;
         try {
             S_ip = NetInterfaces.getAddressByName(Settings.getInterface()).getHostAddress();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public static String getIP(){

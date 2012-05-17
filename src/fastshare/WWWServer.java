@@ -43,7 +43,9 @@ public class WWWServer implements Runnable {
         String port = Settings.getPort();
         try {
             ip = NetInterfaces.getAddressByName(Settings.getInterface()).getHostAddress();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "http://"+ip+":"+port+"/shares";
     }
