@@ -100,13 +100,38 @@ public class NetInterfaces {
             }
         }
         
-        for(int i=0; i<Interfaces.size();i++){
+        for(int i=0; i<Interfaces.size(); i++){
             if(Interfaces.get(i).getName().equals(name)) return Addresses.get(i);
         }
         
         return null;
     }
     
+    public static String getFirstInterfaceName() throws IOException {
+        ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
+        
+        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+        for (NetworkInterface netIf : Collections.list(nets)) {
+            Interfaces.add(netIf);
+        }
+        
+        return Interfaces.get(0).getName();
+    }
+    
+    public static Boolean isAvailable(String name) throws IOException {
+        Boolean ret = false;
+        ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
+        
+        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+        for (NetworkInterface netIf : Collections.list(nets)) {
+            Interfaces.add(netIf);
+        }
+
+        for(int i=0; i<Interfaces.size(); i++){
+            if(Interfaces.get(i).getName().equals(name)) ret = true;
+        }
+        return ret;
+    }
     
     
 }

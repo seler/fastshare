@@ -18,6 +18,12 @@ public class Settings {
     private static String S_interface;
     private static String S_port;
     private static String S_ip;
+    private static String S_username;
+    private static String S_password;
+    private static String S_smtphost;
+    private static String S_smtpport;
+    private static String S_starttls;
+    private static String S_auth;
 
     protected Settings() {
     }
@@ -30,6 +36,7 @@ public class Settings {
     }
 
     public static boolean load() throws Exception {
+        boolean error = false;
         File xmlFile = new File("../settings.xml");
         if (xmlFile.exists() == true) {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -42,14 +49,34 @@ public class Settings {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    setInterface(getTagValue("interface", eElement));
-                    setPort(getTagValue("port", eElement));
+
+                    if (NetInterfaces.isAvailable(getTagValue("interface", eElement)) == true) {
+                        setInterface(getTagValue("interface", eElement));
+                    } else {
+                        setInterface(NetInterfaces.getFirstInterfaceName());
+                    }
+                    try {
+                        setPort(getTagValue("port", eElement));
+                        setUsername(getTagValue("username", eElement));
+                        setPassword(getTagValue("password", eElement));
+                        setSmtphost(getTagValue("smtphost", eElement));
+                        setSmtpport(getTagValue("smtpport", eElement));
+                        setStarttls(getTagValue("starttls", eElement));
+                        setAuth(getTagValue("auth", eElement));
+                    } catch (Exception e) {
+                        error = true;
+                    }
                 }
             }
+            if (error == false) {
+                FastShare.StatusLabel.reprint();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
-        
-        FastShare.StatusLabel.reprint();
-        return true;
     }
 
     public static boolean save() throws Exception {
@@ -75,15 +102,61 @@ public class Settings {
         _port.appendChild(doc.createTextNode(S_port));
         settings.appendChild(_port);
 
+        // username
+        Element _username = doc.createElement("username");
+        _username.appendChild(doc.createTextNode(S_username));
+        settings.appendChild(_username);
+
+        // password
+        Element _password = doc.createElement("password");
+        _password.appendChild(doc.createTextNode(S_password));
+        settings.appendChild(_password);
+
+        // smtphost
+        Element _smtphost = doc.createElement("smtphost");
+        _smtphost.appendChild(doc.createTextNode(S_smtphost));
+        settings.appendChild(_smtphost);
+
+        // smtpport
+        Element _smtpport = doc.createElement("smtpport");
+        _smtpport.appendChild(doc.createTextNode(S_smtpport));
+        settings.appendChild(_smtpport);
+
+        // starttls
+        Element _starttls = doc.createElement("starttls");
+        _starttls.appendChild(doc.createTextNode(S_starttls));
+        settings.appendChild(_starttls);
+
+        // auth
+        Element _auth = doc.createElement("auth");
+        _auth.appendChild(doc.createTextNode(S_auth));
+        settings.appendChild(_auth);
+
         // write the content into xml file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(new File("../settings.xml"));
         transformer.transform(source, result);
-        
+
         FastShare.StatusLabel.reprint();
         return true;
+    }
+
+    public static void autoFill() {
+        try {
+            setInterface(NetInterfaces.getFirstInterfaceName());
+            setPort("8080");
+            setUsername("fastshare123@gmail.com");
+            setPassword("fastshare123");
+            setSmtphost("smtp.gmail.com");
+            setSmtpport("587");
+            setStarttls("true");
+            setAuth("true");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     private static String getTagValue(String sTag, Element eElement) {
@@ -97,11 +170,11 @@ public class Settings {
         try {
             S_ip = NetInterfaces.getAddressByName(Settings.getInterface()).getHostAddress();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
-    
-    public static String getIP(){
+
+    public static String getIP() {
         return S_ip;
     }
 
@@ -115,5 +188,53 @@ public class Settings {
 
     public static String getPort() {
         return S_port;
+    }
+
+    public static void setUsername(String username) {
+        S_username = username;
+    }
+
+    public static String getUsername() {
+        return S_username;
+    }
+
+    public static void setPassword(String password) {
+        S_password = password;
+    }
+
+    public static String getPassword() {
+        return S_password;
+    }
+
+    public static void setSmtphost(String smtphost) {
+        S_smtphost = smtphost;
+    }
+
+    public static String getSmtphost() {
+        return S_smtphost;
+    }
+
+    public static void setSmtpport(String smtpport) {
+        S_smtpport = smtpport;
+    }
+
+    public static String getSmtpport() {
+        return S_smtpport;
+    }
+
+    public static void setStarttls(String starttls) {
+        S_starttls = starttls;
+    }
+
+    public static String getStarttls() {
+        return S_starttls;
+    }
+
+    public static void setAuth(String auth) {
+        S_auth = auth;
+    }
+
+    public static String getAuth() {
+        return S_auth;
     }
 }

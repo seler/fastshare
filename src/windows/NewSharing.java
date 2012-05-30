@@ -19,6 +19,16 @@ public class NewSharing extends javax.swing.JFrame {
     public NewSharing() {
         initComponents();
     }
+    
+    public NewSharing(String _args){
+        initComponents();
+        String[] args = _args.split("\\|\\|");
+        files = new File[args.length];
+        for(int i=0;i<files.length;i++){
+            files[i] = new File(args[i]);
+            jTextArea1.append(files[i].getAbsolutePath()+"\n");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,30 +120,6 @@ public class NewSharing extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*
-         * int argCount = args.length; int filesCount = argCount-2;
-         *
-         * String context = args[0]; 
-         * String email = args[1]; 
-         * ArrayList<String> files = new ArrayList<String>();
-         *
-         * //System.out.println("Pliki:");
-         *
-         * for(int i=0; i<filesCount;i++){ 
-         *      files.add(args[2+i]); 
-         * }
-         *
-         * Sharing sharing = new Sharing(context, email); 
-         * for(String s : files)
-         *      sharing.addFile(s);
-         *
-         * sharing.print();
-         *
-         * WWWServer wwwserv = new WWWServer(); 
-         * wwwserv.addContext(sharing);
-         * wwwserv.run();
-         *
-         */
         fastshare.RandomString rs = new fastshare.RandomString(9);
         String context = "/" + rs.nextString();
         String email = jTextField1.getText();

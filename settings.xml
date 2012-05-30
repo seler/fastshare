@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><fastshare><settings><interface>net4</interface><port>8080</port></settings></fastshare>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><fastshare><settings><interface>eth4</interface><port>8080</port><username>fastshare123@gmail.com</username><password>fastshare123</password><smtphost>smtp.gmail.com</smtphost><smtpport>587</smtpport><starttls>true</starttls><auth>true</auth></settings></fastshare>

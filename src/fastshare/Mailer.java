@@ -13,14 +13,14 @@ import javax.mail.internet.MimeMessage;
 public class Mailer {
 
 	public static void sendNotification(String _to, String _url) {
-		final String username = "fastshare123@gmail.com";
-		final String password = "fastshare123";
+		final String username = fastshare.Settings.getUsername();
+		final String password = fastshare.Settings.getPassword();
  
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-                props.put("mail.smtp.starttls.enable","true");
+		props.put("mail.smtp.auth", fastshare.Settings.getAuth());
+		props.put("mail.smtp.host", fastshare.Settings.getSmtphost());
+		props.put("mail.smtp.port", fastshare.Settings.getSmtpport());
+                props.put("mail.smtp.starttls.enable",fastshare.Settings.getStarttls());
  
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
@@ -30,7 +30,7 @@ public class Mailer {
 		  });
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("fastshare@o2.pl"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(_to));
 			message.setSubject("(FastShare) - Sharing invitation !");
 			message.setText("Hello ! \n\n"
