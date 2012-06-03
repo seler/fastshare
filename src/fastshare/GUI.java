@@ -52,8 +52,9 @@ public class GUI {
 
     public static void showTrayIcon() throws Exception {
         //Image icon = ImageIO.read(FastShare.class.getResource("/ico/tray_off.gif"));
-        setIconOff();
-
+        if(fastshare.WWWServer.getInstance().isRunning()==false) setIconOff();
+        if(fastshare.WWWServer.getInstance().isRunning()==true) setIconOn();
+        
         PopupMenu menu = new PopupMenu();
 
         MenuItem showConfig = new MenuItem("Status & Settings");

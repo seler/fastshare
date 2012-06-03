@@ -24,6 +24,7 @@ public class Settings {
     private static String S_smtpport;
     private static String S_starttls;
     private static String S_auth;
+    private static String S_autostart;
 
     protected Settings() {
     }
@@ -37,7 +38,9 @@ public class Settings {
 
     public static boolean load() throws Exception {
         boolean error = false;
-        File xmlFile = new File("../settings.xml");
+        String homePath = System.getProperty("user.home"); // C\\Users\\nazwa
+        
+        File xmlFile = new File(homePath + "/.fastshare");
         if (xmlFile.exists() == true) {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -63,6 +66,7 @@ public class Settings {
                         setSmtpport(getTagValue("smtpport", eElement));
                         setStarttls(getTagValue("starttls", eElement));
                         setAuth(getTagValue("auth", eElement));
+                        setAutostart(getTagValue("autostart", eElement));
                     } catch (Exception e) {
                         error = true;
                     }
@@ -131,12 +135,20 @@ public class Settings {
         Element _auth = doc.createElement("auth");
         _auth.appendChild(doc.createTextNode(S_auth));
         settings.appendChild(_auth);
+        
+        // auth
+        Element _autostart = doc.createElement("autostart");
+        _autostart.appendChild(doc.createTextNode(S_autostart));
+        settings.appendChild(_autostart);
 
         // write the content into xml file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new File("../settings.xml"));
+        
+        String homePath = System.getProperty("user.home"); // C\\Users\\vltR
+        StreamResult result = new StreamResult(new File(homePath + "/.fastshare"));
+        //Runtime.getRuntime().exec("attrib +H " + System.getProperty("user.home") + "/.fastshare");
         transformer.transform(source, result);
 
         FastShare.StatusLabel.reprint();
@@ -153,6 +165,7 @@ public class Settings {
             setSmtpport("587");
             setStarttls("true");
             setAuth("true");
+            setAutostart("false");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -236,5 +249,13 @@ public class Settings {
 
     public static String getAuth() {
         return S_auth;
+    }
+    
+    public static void setAutostart(String autostart) {
+        S_autostart = autostart;
+    }
+
+    public static String getAutostart() {
+        return S_autostart;
     }
 }

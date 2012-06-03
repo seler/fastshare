@@ -53,12 +53,18 @@ public class WWWServer implements Runnable {
     public void removeContext(Sharing sharing){
         server.removeContext("/shares"+sharing.getContext());
         FastShare.Sharings.remove(sharing);
+        windows.MainWindow.TabModel.clearData();
+        
+        for(Sharing s : FastShare.Sharings){
+            windows.MainWindow.TabModel.addRow(s.getInfo());
+        }
     }
     
     @Override
     public void run() {
         try{
             server = HttpServer.create(new InetSocketAddress(NetInterfaces.getAddressByName(Settings.getInterface()), Integer.parseInt(Settings.getPort())), 0);
+            //server = HttpServer.create(new InetSocketAddress(8080), 0 );
             server.setExecutor(null);
             server.createContext("/", new NoContextHandler());
         } catch(Exception e){ }

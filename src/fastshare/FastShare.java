@@ -13,21 +13,18 @@ public class FastShare {
     public static ArrayList<Sharing> Sharings = new ArrayList<Sharing>();
 
     public static void main(String[] args) throws Exception {
-            
-        //GUI.getInstance().setSystemLookAndFeel();
-        // System.out.println(NetInterfaces.getFirstInterfaceName());
-        //TCPServer.getInstance().run();
-        //Thread servThread = new Thread(TCPServer.getInstance());
-        //servThread.run();
+        
         if (SystemTray.isSupported()) {
             try {   
                 if (Settings.load() == true) {
+                    if(Settings.getAutostart().equals("true")) WWWServer.getInstance().run();
                     GUI.getInstance().showTrayIcon();
                     TCPServer.getInstance().run();
                 } else {
                     Settings.autoFill();
                     Settings.save();
                     if(Settings.load()==true){
+                        if(Settings.getAutostart().equals("true")) WWWServer.getInstance().run();
                         GUI.getInstance().showTrayIcon();
                         TCPServer.getInstance().run();
                     }
