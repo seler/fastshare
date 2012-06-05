@@ -10,8 +10,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
  
+/**
+ * Class responsible for E-mail delivery
+ */
 public class Mailer {
 
+    /**
+     * Sends E-mail notification about new sharing to it's receivers
+     * @param _to   receiver's e-mail
+     * @param _url  sharing's URL
+     */
 	public static void sendNotification(String _to, String _url) {
 		final String username = fastshare.Settings.getUsername();
 		final String password = fastshare.Settings.getPassword();

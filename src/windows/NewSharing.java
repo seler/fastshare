@@ -8,8 +8,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 /**
- *
- * @author vltR
+ *  "New Sharing" Window
  */
 public class NewSharing extends javax.swing.JFrame {
     private File[] files;
@@ -20,6 +19,10 @@ public class NewSharing extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Puts passed filenames to sharing's filelist
+     * @param _args passed filenames
+     */
     public NewSharing(String _args){
         initComponents();
         String[] args = _args.split("\\|\\|");
@@ -104,6 +107,11 @@ public class NewSharing extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Displays "Open File" dialog allowing user to select multiple files/directories
+     * which have to be shared
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         JFileChooser fc = new JFileChooser();
         fc.setMultiSelectionEnabled(true);
@@ -119,6 +127,10 @@ public class NewSharing extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Applies new sharing
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         fastshare.RandomString rs = new fastshare.RandomString(9);
         String context = "/" + rs.nextString();

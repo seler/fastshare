@@ -10,13 +10,21 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author vltR
+ *  Application's main window
  */
 public class MainWindow extends javax.swing.JFrame {
 
+    /**
+     * Table data array
+     */
     private static String tabData[][] = {};
+    /**
+     * Table columns array
+     */
     private static String tabCol[] = {"Receiver(s)", "URL"};
+    /**
+     * Initialized table data model
+     */
     public  static TabModel TabModel = new TabModel(tabData, tabCol);
 
     /**
@@ -38,6 +46,11 @@ public class MainWindow extends javax.swing.JFrame {
         statusLabel1.reprint();
     }
 
+    /**
+     * Adds available network interfaces to ComboBox
+     * @return ComboBox entry model
+     * @throws Exception 
+     */
     private DefaultComboBoxModel comboModelInterface() throws Exception {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (ComboItem i : NetInterfaces.ListInterfacesCombo()) {
@@ -47,6 +60,10 @@ public class MainWindow extends javax.swing.JFrame {
         return model;
     }
 
+    /**
+     * Sets ComboBox at network interface specified in settings
+     * @throws Exception 
+     */
     private void SetCombo() throws Exception {
         for (int i = 0; i < jComboBox1.getItemCount(); i++) {
             ComboItem item = (ComboItem) jComboBox1.getItemAt(i);
@@ -290,6 +307,10 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Saves application settings in XML file
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ComboItem selInterface = (ComboItem) jComboBox1.getSelectedItem();
 
@@ -310,6 +331,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Starts HTTP Server
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         fastshare.WWWServer.getInstance().run();
         if (fastshare.WWWServer.getInstance().isRunning() == true) {
@@ -317,6 +342,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Stops HTTP Server
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         fastshare.WWWServer.getInstance().stop();
         if (fastshare.WWWServer.getInstance().isRunning() == false) {
@@ -324,11 +353,19 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Displays "Add new sharing" dialog
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         windows.NewSharing SharingWin = new windows.NewSharing();
         SharingWin.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    /**
+     * Removes selected sharing
+     * @param evt
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //TabModel.insertRow(0,new Object[]{"Ranjan","50"});
         //System.out.println("Selected row: #" + jTable1.getSelectedRow() + " // context: " + fastshare.FastShare.Sharings.get(jTable1.getSelectedRow()).getContext() );

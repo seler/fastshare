@@ -12,6 +12,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Manages user settings
+ */
 public class Settings {
 
     private static Settings instance = null;
@@ -26,9 +29,16 @@ public class Settings {
     private static String S_auth;
     private static String S_autostart;
 
+    /**
+     * Protected constructor - Singleton
+     */
     protected Settings() {
     }
 
+    /**
+     * Returns initializated instance, or initiates a new one
+     * @return instance
+     */
     public static Settings getInstance() {
         if (instance == null) {
             instance = new Settings();
@@ -36,6 +46,11 @@ public class Settings {
         return instance;
     }
 
+    /**
+     * Loads user settings from XML file
+     * @return boolean, indicating if settings were loaded
+     * @throws Exception 
+     */
     public static boolean load() throws Exception {
         boolean error = false;
         String homePath = System.getProperty("user.home"); // C\\Users\\nazwa
@@ -83,6 +98,11 @@ public class Settings {
         }
     }
 
+    /**
+     * Saves user settings to XML file
+     * @return boolean indicating if settings were saved
+     * @throws Exception 
+     */
     public static boolean save() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -155,6 +175,9 @@ public class Settings {
         return true;
     }
 
+    /**
+     * Sets default settings if can't load from XML file
+     */
     public static void autoFill() {
         try {
             setInterface(NetInterfaces.getFirstInterfaceName());
@@ -172,12 +195,22 @@ public class Settings {
 
     }
 
+    /**
+     * Gets tag value from XML format
+     * @param sTag  tag name
+     * @param eElement XML node
+     * @return tag value
+     */
     private static String getTagValue(String sTag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
         Node nValue = (Node) nlList.item(0);
         return nValue.getNodeValue();
     }
 
+    /**
+     * Sets interface name
+     * @param iface interface name
+     */
     public static void setInterface(String iface) {
         S_interface = iface;
         try {
@@ -187,74 +220,146 @@ public class Settings {
         }
     }
 
+    /**
+     * Returns IP address
+     * @return IP address
+     */
     public static String getIP() {
         return S_ip;
     }
 
+    /**
+     * Returns interface name
+     * @return interface name
+     */
     public static String getInterface() {
         return S_interface;
     }
 
+    /**
+     * Sets HTTP port
+     * @param port HTTP port
+     */
     public static void setPort(String port) {
         S_port = port;
     }
 
+    /**
+     * Returns HTTP port
+     * @return HTTP port
+     */
     public static String getPort() {
         return S_port;
     }
 
+    /**
+     * Sets SMTP username
+     * @param username SMTP username
+     */
     public static void setUsername(String username) {
         S_username = username;
     }
 
+    /**
+     * Returns SMTP username
+     * @return SMTP username
+     */
     public static String getUsername() {
         return S_username;
     }
 
+    /**
+     * Sets SMTP password
+     * @param password SMTP password
+     */
     public static void setPassword(String password) {
         S_password = password;
     }
 
+    /**
+     * Returns SMTP password
+     * @return SMTP password
+     */
     public static String getPassword() {
         return S_password;
     }
 
+    /**
+     * Sets SMTP host
+     * @param smtphost SMTP host 
+     */
     public static void setSmtphost(String smtphost) {
         S_smtphost = smtphost;
     }
 
+    /**
+     * Returns SMTP host
+     * @return SMTP host
+     */
     public static String getSmtphost() {
         return S_smtphost;
     }
 
+    /**
+     * Sets SMTP port
+     * @param smtpport SMTP port 
+     */
     public static void setSmtpport(String smtpport) {
         S_smtpport = smtpport;
     }
 
+    /**
+     * Returns SMTP port
+     * @return SMTP port
+     */
     public static String getSmtpport() {
         return S_smtpport;
     }
 
+    /**
+     * Returns STARTTLS boolean
+     * @param starttls STARTTLS boolean
+     */
     public static void setStarttls(String starttls) {
         S_starttls = starttls;
     }
 
+    /**
+     * Returns STARTTLS boolean
+     * @return STARTTLS boolean
+     */
     public static String getStarttls() {
         return S_starttls;
     }
 
+    /**
+     * Sets SMTP Authentication
+     * @param auth SMTP Authentication
+     */
     public static void setAuth(String auth) {
         S_auth = auth;
     }
 
+    /**
+     * Returns SMTP Authentication
+     * @return SMTP Authentication
+     */
     public static String getAuth() {
         return S_auth;
     }
     
+    /**
+     * Sets Autostart boolean
+     * @param autostart Autostart boolean
+     */
     public static void setAutostart(String autostart) {
         S_autostart = autostart;
     }
 
+    /**
+     * Returns Autostart boolean
+     * @return Autostart boolean
+     */
     public static String getAutostart() {
         return S_autostart;
     }

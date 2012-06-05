@@ -7,8 +7,7 @@ package windows;
 import fastshare.GUI;
 
 /**
- *
- * @author vltR
+ *  Dialog saying "Settings Not Found"
  */
 public class SettingsNotFound extends javax.swing.JFrame {
 

@@ -5,8 +5,15 @@ import java.net.*;
 import java.util.*;
 import sun.java2d.pipe.ValidatePipe;
 
+/**
+ * Manages network interfaces
+ */
 public class NetInterfaces {
 
+    /**
+     * Lists available network interfaces on standard output
+     * @throws IOException 
+     */
     public static void ListInterfaces() throws IOException {
         ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
         ArrayList<InetAddress> Addresses         = new ArrayList<InetAddress>();
@@ -32,7 +39,11 @@ public class NetInterfaces {
         
     }
 
-    
+    /**
+     * Lists available network interfaces and their IP adresses on main window's ComboBox
+     * @return Combo Items
+     * @throws Exception 
+     */
     public static ArrayList<windows.ComboItem> ListInterfacesCombo() throws Exception {
         ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
         ArrayList<InetAddress> Addresses         = new ArrayList<InetAddress>();
@@ -61,7 +72,12 @@ public class NetInterfaces {
         return ret;
     }
     
-    
+    /**
+     * Returns IP address of specified network interface
+     * @param interfID interface ID
+     * @return IP address
+     * @throws IOException 
+     */
     public static InetAddress getAddress(int interfID) throws IOException {
         ArrayList<InetAddress> Addresses         = new ArrayList<InetAddress>();
         
@@ -81,6 +97,12 @@ public class NetInterfaces {
         
     }
     
+    /**
+     * Retuns IP Address of specified network interface
+     * @param name  interface name
+     * @return IP address
+     * @throws IOException 
+     */
     public static InetAddress getAddressByName(String name) throws IOException {
         InetAddress ret;
         
@@ -107,6 +129,11 @@ public class NetInterfaces {
         return null;
     }
     
+    /**
+     * Returns first available network interface
+     * @return first available network interface's name
+     * @throws IOException 
+     */
     public static String getFirstInterfaceName() throws IOException {
         ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();
         
@@ -118,6 +145,12 @@ public class NetInterfaces {
         return Interfaces.get(0).getName();
     }
     
+    /**
+     * Returns true if specified network interface is available
+     * @param name network interface's name
+     * @return boolean describing interface's availability
+     * @throws IOException 
+     */
     public static Boolean isAvailable(String name) throws IOException {
         Boolean ret = false;
         ArrayList<NetworkInterface> Interfaces   = new ArrayList<NetworkInterface>();

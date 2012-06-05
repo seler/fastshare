@@ -4,15 +4,34 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+/**
+ * HTTP Server serving resources to the clients
+ */
 public class WWWServer implements Runnable {
 
+    /**
+     * Instance - (Singleton)
+     */
     private static WWWServer instance = null;
+    /**
+     * Boolean indicating if server is running or not
+     */
     private boolean running = false;
+    /**
+     * HTTP Server implementation
+     */
     HttpServer server;
     
+    /**
+     * Protected constructor - (Singleton)
+     */
     protected WWWServer() {
     }
 
+    /**
+     * Returns initialized instance
+     * @return initialized instance
+     */
     public static WWWServer getInstance() {
         if (instance == null) {
             instance = new WWWServer();
@@ -20,6 +39,10 @@ public class WWWServer implements Runnable {
         return instance;
     }
 
+    /**
+     * Adds new sharing. From now, sharing is available via HTTP
+     * @param sharing object representing sharing
+     */
     public void addContext(Sharing sharing){
         server.createContext("/shares"+sharing.getContext(), new GetHandler(sharing));
         FastShare.Sharings.add(sharing);
@@ -38,6 +61,10 @@ public class WWWServer implements Runnable {
         }
     }
     
+    /**
+     * Returns the server's URL (IP and port)
+     * @return the server's URL
+     */
     private String getURL(){
         String ip = "";
         String port = Settings.getPort();
@@ -50,6 +77,10 @@ public class WWWServer implements Runnable {
         return "http://"+ip+":"+port+"/shares";
     }
     
+    /**
+     * Removes sharing. From now, sharing is not availble via HTTP
+     * @param sharing object representing sharing
+     */
     public void removeContext(Sharing sharing){
         server.removeContext("/shares"+sharing.getContext());
         FastShare.Sharings.remove(sharing);
@@ -60,6 +91,9 @@ public class WWWServer implements Runnable {
         }
     }
     
+    /**
+     * Starts the server on interface and port specified in Settings
+     */
     @Override
     public void run() {
         try{
@@ -76,6 +110,9 @@ public class WWWServer implements Runnable {
         } catch(Exception e){ }
     }
     
+    /**
+     * Stops the server
+     */
     public void stop() {
         server.stop(0);
         server = null;
@@ -87,6 +124,10 @@ public class WWWServer implements Runnable {
         } catch(Exception e){ }
     }
     
+    /**
+     * Returns boolean indicating if server is running
+     * @return boolean indicating if server is running
+     */
     public boolean isRunning(){
         return running;
     }
